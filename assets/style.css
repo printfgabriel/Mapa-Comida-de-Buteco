@@ -4,6 +4,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap");
+
 .map-area{
     height: 90vh;
     width: 70vw;
@@ -50,8 +51,6 @@
     font-size: 15px;
     background-color: white;
 }
-
-
 
 .right-panel h2 {
     margin-top: 12px;
