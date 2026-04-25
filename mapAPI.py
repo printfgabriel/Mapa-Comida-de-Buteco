@@ -16,17 +16,23 @@ def getCoordinates(query: str):
         "User-Agent": "comida-di-buteco/1.0 ()"
     }
 
+    try: 
+        response_raw = requests.get(f"https://nominatim.openstreetmap.org/search", params=params, headers=headers, timeout=10)
+        response_raw.raise_for_status()
+        response=response_raw.json()
 
-    response = requests.get(f"https://nominatim.openstreetmap.org/search", params=params, headers=headers).json()
+        if not response:
+            return None
 
-    if not response:
+        lon = float(response[0]["lon"])
+        lat = float(response[0]["lat"])
+            
+        # ATENÇÃO, ISSO É (Y,X) PQ MAPS USA (lat, lon), MAS PODE PRECISAR INVERTER 
+        return (lat,lon)
+    
+    except Exception as e:
+        print(f"ERRO NA API: {e}\n")
         return None
-
-    lon = float(response[0]["lon"])
-    lat = float(response[0]["lat"])
-        
-    # ATENÇÃO, ISSO É (Y,X) PQ MAPS USA (lat, lon), MAS PODE PRECISAR INVERTER 
-    return (lat,lon)
 
 
 
