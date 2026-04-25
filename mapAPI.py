@@ -17,13 +17,16 @@ def getCoordinates(query: str):
     }
 
 
-    response = requests.get(f"http://nominatim.openstreetmap.org/search", params=params, headers=headers).json()
+    response = requests.get(f"https://nominatim.openstreetmap.org/search", params=params, headers=headers).json()
 
-    lon = response[0]["lon"]
-    lat = response[0]["lat"]
+    if not response:
+        return None
+
+    lon = float(response[0]["lon"])
+    lat = float(response[0]["lat"])
         
-    # ATENÇÃO, MAPS USA (lat, lon)
-    return (lon,lat)
+    # ATENÇÃO, ISSO É (Y,X) PQ MAPS USA (lat, lon), MAS PODE PRECISAR INVERTER 
+    return (lat,lon)
 
 
 
