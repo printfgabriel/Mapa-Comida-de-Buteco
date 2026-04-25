@@ -32,7 +32,7 @@ def update_rectangle(center=(-23.0,-46.0), diagonal=1):
 
 @callback(
     Output("marker-layer", "children"),
-    Input("input-center", "value"),
+    Input("input-address", "value"),
     Input("input-diagonal", "value"),
 )
 def update_map(center_adr, diag_val):

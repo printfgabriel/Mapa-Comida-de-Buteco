@@ -40,18 +40,20 @@ def update_rectangle(center=(-23.0,-46.0), diagonal=1):
     return [dl.Rectangle(bounds=bounds)]
 
 
-app.layout = html.Div([
-    dl.Map(center=[-23, -46], zoom=8, style={'width': '100%', 'height': '500px'}, children=[
-        dl.TileLayer(),
-        dl.LayerGroup(id="marker-layer")
-    ]),
-    dcc.Input(id="input-center", value="", type="text", debounce=True),
-    dcc.Input(id="input-diagonal", value="", type="number"),
-])
+# app.layout = html.Div([
+#     dl.Map(center=[-23, -46], zoom=8, style={'width': '100%', 'height': '500px'}, children=[
+#         dl.TileLayer(),
+#         dl.LayerGroup(id="marker-layer")
+#     ]),
+#     dcc.Input(id="input-center", value="", type="text", debounce=True),
+#     dcc.Input(id="input-diagonal", value="", type="number"),
+# ])
+
+
 
 @app.callback(
     Output("marker-layer", "children"),
-    Input("input-center", "value"),
+    Input("input-address", "value"),
     Input("input-diagonal", "value"),
 )
 
@@ -77,8 +79,6 @@ def update_map(center_adr, diag_val):
 
     return markers + rectangle
     
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
