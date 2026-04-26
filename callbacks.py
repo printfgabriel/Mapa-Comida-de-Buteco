@@ -19,7 +19,6 @@ def update_markers(n=5):
                     "iconSize": [60, 60],
                     #0.6
                     "iconAnchor": [30, 41],
-
                     "shadowUrl": "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
                     "shadowSize": [41, 41]
                 }
@@ -43,7 +42,7 @@ def update_map(center_adr, diag_val):
         return no_update
 
     center_val = getCoordinates(center_adr)
-
+    
     if center_val is None:
         return no_update
 

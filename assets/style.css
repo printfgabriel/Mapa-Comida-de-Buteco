@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap");
+
+.map-area{
+    height: 90vh;
+    width: 70vw;
+}
+
+.header{
+    font-size: 3rem;
+    background-color: darkred;
+    height: 10vh;
+    font-style: Abhaya;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+.main-container {
+    width: 100vw;
+    height: 100vh;
+  
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+}
+
+.map-area {
+    height: 100%;
+    width: 70vw;
+}
+
+.right-panel {
+    width: 30vw;
+    height: 100%;
+    padding: 24px;
+}
+
+.text-input {
+    width: 100%;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: white;
+}
+
+.right-panel h2 {
+    margin-top: 12px;
+    margin-bottom: 16px;
+    font-size: 22px;
+}
+
+.table-container {
+    width: 100%;
+    margin-top: 16px;
+}

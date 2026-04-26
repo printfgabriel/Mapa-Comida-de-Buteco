@@ -6,17 +6,10 @@ from bar import Bar
 from mapAPI import getCoordinates
 import time
 
-
 app = dash.Dash(__name__)
+icon = dict(html="<div><span> 10 </span></div>", className="marker-cluster marker-cluster-small", iconSize=[40, 40])
 
 app.layout = html.Div([
-    dl.Map(center=[-23, -46], zoom=8, style={'width': '100%', 'height': '500px'}, children=[
-        dl.TileLayer(),
-        dl.LayerGroup(id="marker-layer")
-    ]),
-    dcc.Input(id="input-center", value="", type="text", debounce=True),
-    dcc.Input(id="input-diagonal", value="", type="number"),
-])
     html.Div([html.H1("Mapa Comida de Buteco")], className="header"),
     html.Div([
         html.Div([
@@ -66,10 +59,6 @@ app.layout = html.Div([
 # ESSE IMPORT  TEM Q FICAR AQUI MESMO, DPS DA CRIAÇÃO DO APP
 import callbacks 
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
 #Lê arquivo csv e retorna conteúdo
 #pensei agora vamo deixar os comentários em português mesmo? 
 def load_bars_from_csv(file_path):
@@ -116,8 +105,13 @@ if __name__ == "__main__":
     # main()
 
 
+    
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
+# app.layout  = html.Div([
+#     dl.Map(center=[-23, -46], zoom=8, style={'width': '100%', 'height': '500px'}, children=[
+#         dl.TileLayer(),
+#         dl.LayerGroup(id="marker-layer")
+#     ]),
+#     dcc.Input(id="input-center", value="", type="text", debounce=True),
+#     dcc.Input(id="input-diagonal", value="", type="number"),
+# ])
