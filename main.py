@@ -1,18 +1,15 @@
 import dash
 from dash import html, dcc
 import dash_leaflet as dl
-<<<<<<< Updated upstream
-=======
 import csv
 from bar import Bar
 from mapAPI import getCoordinates
 import time
->>>>>>> Stashed changes
+
 
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
-<<<<<<< Updated upstream
     dl.Map(center=[-23, -46], zoom=8, style={'width': '100%', 'height': '500px'}, children=[
         dl.TileLayer(),
         dl.LayerGroup(id="marker-layer")
@@ -20,8 +17,6 @@ app.layout = html.Div([
     dcc.Input(id="input-center", value="", type="text", debounce=True),
     dcc.Input(id="input-diagonal", value="", type="number"),
 ])
-
-=======
     html.Div([html.H1("Mapa Comida de Buteco")], className="header"),
     html.Div([
         html.Div([
@@ -67,16 +62,14 @@ app.layout = html.Div([
 
     
     ], className="main-container")
->>>>>>> Stashed changes
 
 # ESSE IMPORT  TEM Q FICAR AQUI MESMO, DPS DA CRIAÇÃO DO APP
 import callbacks 
 
-<<<<<<< Updated upstream
 
 if __name__ == "__main__":
     app.run(debug=True)
-=======
+
 #Lê arquivo csv e retorna conteúdo
 #pensei agora vamo deixar os comentários em português mesmo? 
 def load_bars_from_csv(file_path):
@@ -123,14 +116,8 @@ if __name__ == "__main__":
     # main()
 
 
-    
 
-# app.layout  = html.Div([
-#     dl.Map(center=[-23, -46], zoom=8, style={'width': '100%', 'height': '500px'}, children=[
-#         dl.TileLayer(),
-#         dl.LayerGroup(id="marker-layer")
-#     ]),
-#     dcc.Input(id="input-center", value="", type="text", debounce=True),
-#     dcc.Input(id="input-diagonal", value="", type="number"),
-# ])
->>>>>>> Stashed changes
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
