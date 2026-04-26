@@ -14,9 +14,11 @@ def update_markers(n=5):
                 position=[lat, lon],
                 children=dl.Tooltip(f"Marker {i+1}"),
                 icon={
-                    "iconUrl": f"https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-{color}.png",
-                    "iconSize": [25, 41],
-                    "iconAnchor": [12, 41],
+                    # "iconUrl": f"https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-{color}.png",
+                    "iconUrl": "/static/marker_food.png",
+                    "iconSize": [60, 60],
+                    #0.6
+                    "iconAnchor": [30, 41],
                     "shadowUrl": "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
                     "shadowSize": [41, 41]
                 }
@@ -31,8 +33,13 @@ def update_rectangle(center=(-23.0,-46.0), diagonal=1):
     return [dl.Rectangle(bounds=bounds)]
 
 @callback(
+<<<<<<< Updated upstream
     Output("marker-layer", "children"),
     Input("input-center", "value"),
+=======
+    Output("map-layer", "children"),
+    Input("input-address", "value"),
+>>>>>>> Stashed changes
     Input("input-diagonal", "value"),
 )
 def update_map(center_adr, diag_val):
@@ -40,6 +47,7 @@ def update_map(center_adr, diag_val):
         return no_update
 
     center_val = getCoordinates(center_adr)
+    
     if center_val is None:
         return no_update
 
