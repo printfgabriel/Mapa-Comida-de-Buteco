@@ -46,31 +46,34 @@ class D2_tree:
     
 
     def range_search(self, node: Tree_node, lat_min, lat_max, long_min, long_max, depth):
-        result_bars = []
-        c = node.value
+        if not node:
+            return []
         
-        if not node.left_son and not node.right_son and node.bar:
-            bar = node.bar
-            if bar.longitude <= long_max and bar.longitude >= long_min and bar.latitude <= lat_max and bar.latitude >= lat_min:
-                result_bars.append(bar)
-            else:
-                return    
+        result_bars = []
 
+        if not node.left_son and not node.right_son:
+            if node.bar:
+                bar = node.bar
+                if long_min <= bar.longitude <= long_max and  lat_min <= bar.latitude <= lat_max:
+                    return[bar]
+                return []
+
+        c = node.value
         axis = depth % 2 
         # par é latitude
         # impar é longitudo
 
         if axis==0: # latitude
             if lat_min <= c and node.left_son:
-                self.range_search(self, node.left_son, lat_min, lat_max, long_min, long_max, depth+1)
-            if lat_max > c and node.right_son:
-                self.range_search(node.right_son, lat_min, lat_max, long_min, long_max, depth+1)
+                result_bars.extend(self.range_search(node.left_son, lat_min, lat_max, long_min, long_max, depth+1))
+            if lat_max >= c and node.right_son:
+                result_bars.extend(self.range_search(node.right_son, lat_min, lat_max, long_min, long_max, depth+1))
 
         else:  #longitude
             if long_min <= c and node.left_son:
-                self.range_search(node.left_son, lat_min, lat_max, long_min, long_max, depth+1)
-            if long_max > c and node.right_son:
-                self.range_search(node.right_son, lat_min, lat_max, long_min, long_max, depth+1)
+                result_bars.extend(self.range_search(node.left_son, lat_min, lat_max, long_min, long_max, depth+1))
+            if long_max >= c and node.right_son:
+                result_bars.extend(self.range_search(node.right_son, lat_min, lat_max, long_min, long_max, depth+1))
 
         return result_bars
     
