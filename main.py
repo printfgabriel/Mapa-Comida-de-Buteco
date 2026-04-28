@@ -5,7 +5,7 @@ import csv
 from bar import Bar
 from mapAPI import getCoordinates
 import time
-
+from D2Tree import D2_tree
 app = dash.Dash(__name__)
 icon = dict(html="<div><span> 10 </span></div>", className="marker-cluster marker-cluster-small", iconSize=[40, 40])
 
@@ -96,13 +96,15 @@ def main():
     print("Hello from mapa-comida-de-buteco!")
     bars = load_bars_from_csv('data/butecos_bh.csv')
     print("Fim da criação do CSV\n\n")
-    for bar in bars:
-        print(bar.name)
+    
+    tree = D2_tree(bars)
 
+    # tree.print_tree()
+    # tree.validate_tree()
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    # main()
+    #app.run(debug=True)
+    main()
 
 
     
