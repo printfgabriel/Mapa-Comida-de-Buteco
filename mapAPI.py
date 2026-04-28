@@ -16,20 +16,34 @@ def getCoordinates(query: str):
         "User-Agent": "comida-di-buteco/1.0 ()"
     }
 
-
-    response = requests.get(f"http://nominatim.openstreetmap.org/search", params=params, headers=headers).json()
-
-    lon = response[0]["lon"]
-    lat = response[0]["lat"]
+    try:
+        response_raw = requests.get(
+            "https://nominatim.openstreetmap.org/search", 
+            params=params, 
+            headers=headers,
+            timeout=10 
+        )
         
-    # ATENÇÃO, MAPS USA (lat, lon)
-    return (lon,lat)
+        response_raw.raise_for_status() 
+        
+        response = response_raw.json()
+
+        if not response:
+            return None
+
+        lat = float(response[0]["lat"])
+        lon = float(response[0]["lon"])
+        return (lat, lon)
+
+    except Exception as e:
+        print(f"Erro na API: {e}")
+        return None
 
 
 
 def testando():
 
-    (X, Y) = getCoordinates("Rua Itauninha 631 Santa Cruz")
+    (X, Y) = getCoordinates("Torre Eiffel")
 
     print(f"Coordenada ({X},{Y})")
     print(f"coordenada pra pesquisar no MAPS: ({Y},{X})")

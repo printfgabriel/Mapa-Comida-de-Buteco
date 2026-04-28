@@ -4,6 +4,7 @@ import dash_leaflet as dl
 import csv
 from bar import Bar
 from mapAPI import getCoordinates
+import time
 
 app = dash.Dash(__name__)
 icon = dict(html="<div><span> 10 </span></div>", className="marker-cluster marker-cluster-small", iconSize=[40, 40])
@@ -15,6 +16,7 @@ app.layout = html.Div([
             dl.Map(
                 [
                     dl.TileLayer(),
+                    dl.LayerGroup(id="map-layer"),
                     dl.DivMarker(
                         position=[-19.9167, -43.9345],
                         iconOptions=icon
@@ -38,7 +40,7 @@ app.layout = html.Div([
 
                 dcc.Input(
                     id="input-diagonal",
-                    type="text",
+                    type="number",
                     placeholder="Digite a diagonal do retângulo",
                     className="text-input"
                 ),
@@ -60,15 +62,31 @@ import callbacks
 #Lê arquivo csv e retorna conteúdo
 #pensei agora vamo deixar os comentários em português mesmo? 
 def load_bars_from_csv(file_path):
-    with open(file_path, mode = 'r', encoding='utf-8') as csv_file:
+
+    with open(file_path, mode='r', encoding='utf-8') as csv_file, \
+         open('data/butecos_com_coords.csv', mode='w', encoding='utf-8', newline='') as out_file:
+        
         csv_reader = csv.DictReader(csv_file, delimiter=';')
-        bars=[]
+        writer = csv.writer(out_file, delimiter=';')
+        writer.writerow(['name', 'latitude', 'longitude'])
+        
+        bars = []
         for row in csv_reader:
+            time.sleep(1)
             print(row['name'])
-            print(row['address'].replace(",", " "))
-            longitude, latitude  = getCoordinates(row['address'].replace(",", " "))
-            new_bar = Bar(name = row['name'], address= row['address'], latitude=latitude, longitude=longitude)
-            bars.append(new_bar)
+            
+            coordinate = getCoordinates(row['address'].replace(",", " "))
+            
+            latitude, longitude = "", ""
+            
+            if coordinate:
+                latitude, longitude = coordinate
+                new_bar = Bar(name=row['name'], address=row['address'], latitude=latitude, longitude=longitude)
+                bars.append(new_bar)
+            else:
+                print(f"Erro na API ao ler csv, bar: {row['name']}")
+
+            writer.writerow([row['name'], latitude, longitude])
         
     return bars
     
@@ -77,13 +95,14 @@ def load_bars_from_csv(file_path):
 def main():
     print("Hello from mapa-comida-de-buteco!")
     bars = load_bars_from_csv('data/butecos_bh.csv')
+    print("Fim da criação do CSV\n\n")
     for bar in bars:
         print(bar.name)
 
 
 if __name__ == "__main__":
-    #app.run(debug=True)
-    main()
+    app.run(debug=True)
+    # main()
 
 
     
