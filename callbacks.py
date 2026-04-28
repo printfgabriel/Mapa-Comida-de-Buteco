@@ -33,13 +33,8 @@ def update_rectangle(center=(-23.0,-46.0), diagonal=1):
     return [dl.Rectangle(bounds=bounds)]
 
 @callback(
-<<<<<<< Updated upstream
-    Output("marker-layer", "children"),
-    Input("input-center", "value"),
-=======
     Output("map-layer", "children"),
     Input("input-address", "value"),
->>>>>>> Stashed changes
     Input("input-diagonal", "value"),
 )
 def update_map(center_adr, diag_val):

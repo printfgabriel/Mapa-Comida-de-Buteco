@@ -1,27 +1,15 @@
 import dash
 from dash import html, dcc
 import dash_leaflet as dl
-<<<<<<< Updated upstream
-=======
 import csv
 from bar import Bar
 from mapAPI import getCoordinates
 import time
->>>>>>> Stashed changes
-
+from D2Tree import D2_tree
 app = dash.Dash(__name__)
+icon = dict(html="<div><span> 10 </span></div>", className="marker-cluster marker-cluster-small", iconSize=[40, 40])
 
 app.layout = html.Div([
-<<<<<<< Updated upstream
-    dl.Map(center=[-23, -46], zoom=8, style={'width': '100%', 'height': '500px'}, children=[
-        dl.TileLayer(),
-        dl.LayerGroup(id="marker-layer")
-    ]),
-    dcc.Input(id="input-center", value="", type="text", debounce=True),
-    dcc.Input(id="input-diagonal", value="", type="number"),
-])
-
-=======
     html.Div([html.H1("Mapa Comida de Buteco")], className="header"),
     html.Div([
         html.Div([
@@ -67,44 +55,28 @@ app.layout = html.Div([
 
     
     ], className="main-container")
->>>>>>> Stashed changes
 
 # ESSE IMPORT  TEM Q FICAR AQUI MESMO, DPS DA CRIAÇÃO DO APP
 import callbacks 
 
-<<<<<<< Updated upstream
 
-if __name__ == "__main__":
-    app.run(debug=True)
-=======
 #Lê arquivo csv e retorna conteúdo
 #pensei agora vamo deixar os comentários em português mesmo? 
 def load_bars_from_csv(file_path):
 
-    with open(file_path, mode='r', encoding='utf-8') as csv_file, \
-         open('data/butecos_com_coords.csv', mode='w', encoding='utf-8', newline='') as out_file:
+    with open('data/butecos_com_coords.csv', mode='w', encoding='utf-8', newline='') as csv_file:
         
         csv_reader = csv.DictReader(csv_file, delimiter=';')
-        writer = csv.writer(out_file, delimiter=';')
-        writer.writerow(['name', 'latitude', 'longitude'])
         
         bars = []
         for row in csv_reader:
-            time.sleep(1)
-            print(row['name'])
+            latitude, longitude = row['latitude'], row['longitude']
             
-            coordinate = getCoordinates(row['address'].replace(",", " "))
-            
-            latitude, longitude = "", ""
-            
-            if coordinate:
-                latitude, longitude = coordinate
+            if latitude and longitude:
                 new_bar = Bar(name=row['name'], address=row['address'], latitude=latitude, longitude=longitude)
                 bars.append(new_bar)
             else:
-                print(f"Erro na API ao ler csv, bar: {row['name']}")
-
-            writer.writerow([row['name'], latitude, longitude])
+                print(f"Bar {row['name']} com problemas, foi ignorado!")
         
     return bars
     
@@ -114,13 +86,15 @@ def main():
     print("Hello from mapa-comida-de-buteco!")
     bars = load_bars_from_csv('data/butecos_bh.csv')
     print("Fim da criação do CSV\n\n")
-    for bar in bars:
-        print(bar.name)
+    
+    tree = D2_tree(bars)
 
+    # tree.print_tree()
+    # tree.validate_tree()
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    # main()
+    #app.run(debug=True)
+    main()
 
 
     
@@ -133,4 +107,32 @@ if __name__ == "__main__":
 #     dcc.Input(id="input-center", value="", type="text", debounce=True),
 #     dcc.Input(id="input-diagonal", value="", type="number"),
 # ])
->>>>>>> Stashed changes
+
+# def load_bars_from_csv(file_path):
+
+#     with open(file_path, mode='r', encoding='utf-8') as csv_file, \
+#          open('data/butecos_com_coords.csv', mode='w', encoding='utf-8', newline='') as out_file:
+        
+#         csv_reader = csv.DictReader(csv_file, delimiter=';')
+#         writer = csv.writer(out_file, delimiter=';')
+#         writer.writerow(['name', 'latitude', 'longitude'])
+        
+#         bars = []
+#         for row in csv_reader:
+#             time.sleep(1)
+#             print(row['name'])
+            
+#             coordinate = getCoordinates(row['address'].replace(",", " "))
+            
+#             latitude, longitude = "", ""
+            
+#             if coordinate:
+#                 latitude, longitude = coordinate
+#                 new_bar = Bar(name=row['name'], address=row['address'], latitude=latitude, longitude=longitude)
+#                 bars.append(new_bar)
+#             else:
+#                 print(f"Erro na API ao ler csv, bar: {row['name']}")
+
+#             writer.writerow([row['name'], latitude, longitude])
+        
+#     return bars
