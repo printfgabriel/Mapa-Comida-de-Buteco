@@ -6,11 +6,15 @@ from mapAPI import getCoordinates
 import time
 from D2Tree import D2_tree
 from tree_instance import tree
-
+import json
 
 
 app = dash.Dash(__name__)
+
 icon = dict(html="<div><span> 10 </span></div>", className="marker-cluster marker-cluster-small", iconSize=[40, 40])
+
+with open("data/bairros_bh.geojson", "r", encoding="utf-8") as f:
+    geojson_data = json.load(f)
 
 app.layout = html.Div([
     html.Div([html.H1("Mapa Comida de Buteco")], className="header"),
@@ -19,6 +23,12 @@ app.layout = html.Div([
             dl.Map(
                 [
                     dl.TileLayer(),
+                    dl.GeoJSON(
+                        data=geojson_data,
+                        id="bairros-layer",
+                        options={"style": {"color": "blue", "weight": 1, "fillOpacity": 0.1}}, # Estética
+                        hoverStyle={"fillOpacity": 0.3, "color": "red"} # Efeito ao passar o mouse
+                    ),
                     dl.LayerGroup(id="map-layer"),
                     dl.DivMarker(
                         position=[-19.9167, -43.9345],
