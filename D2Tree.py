@@ -76,12 +76,6 @@ class D2_tree:
                 result_bars.extend(self.range_search(node.right_son, lat_min, lat_max, long_min, long_max, depth+1))
 
         return result_bars
-    
-    
-    
-    
-    
-    
         
     # def bar_label(self, bar):
     #     nome = getattr(bar, "name", getattr(bar, "nome", "sem_nome"))
