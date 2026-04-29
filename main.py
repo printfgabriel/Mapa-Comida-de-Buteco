@@ -62,7 +62,7 @@ app.layout = html.Div([
                 dcc.Input(
                     id="input-range",
                     type="number",
-                    placeholder="Digite a diagonal do retângulo",
+                    placeholder="Digite a diagonal ou raio",
                     className="text-input"
                 ),
 
