@@ -89,15 +89,15 @@ class D2_tree:
 
         if axis==0: # latitude
             if lat_min <= c and node.left_son:
-                result_bars.extend(self.range_search(node.left_son, lat_min, lat_max, long_min, long_max, depth+1))
+                result_bars.extend(self.range_search_rectangule(node.left_son, lat_min, lat_max, long_min, long_max, depth+1))
             if lat_max >= c and node.right_son:
-                result_bars.extend(self.range_search(node.right_son, lat_min, lat_max, long_min, long_max, depth+1))
+                result_bars.extend(self.range_search_rectangule(node.right_son, lat_min, lat_max, long_min, long_max, depth+1))
 
         else:  #longitude
             if long_min <= c and node.left_son:
-                result_bars.extend(self.range_search(node.left_son, lat_min, lat_max, long_min, long_max, depth+1))
+                result_bars.extend(self.range_search_rectangule(node.left_son, lat_min, lat_max, long_min, long_max, depth+1))
             if long_max >= c and node.right_son:
-                result_bars.extend(self.range_search(node.right_son, lat_min, lat_max, long_min, long_max, depth+1))
+                result_bars.extend(self.range_search_rectangule(node.right_son, lat_min, lat_max, long_min, long_max, depth+1))
 
         return result_bars
     

@@ -43,7 +43,15 @@ app.layout = html.Div([
             )], className="map-area"),
         html.Div([
             html.Div([
-
+                dcc.RadioItems(
+                id="input-shape",
+                options=[
+                    {"label": "Retângulo", "value": "retangulo"},
+                    {"label": "Círculo", "value": "circulo"},
+                ],
+                value="retangulo",
+                className="radio-input"
+                ),
                 dcc.Input(
                     id="input-address",
                     type="text",
@@ -52,7 +60,7 @@ app.layout = html.Div([
                 ),
 
                 dcc.Input(
-                    id="input-diagonal",
+                    id="input-range",
                     type="number",
                     placeholder="Digite a diagonal do retângulo",
                     className="text-input"
@@ -84,11 +92,6 @@ app.layout = html.Div([
 # ESSE IMPORT  TEM Q FICAR AQUI MESMO, DPS DA CRIAÇÃO DO APP
 import callbacks 
 
-
-
-    
-
-
 def main():
     print("Hello")
     print(f"Árvore carregada com {len(tree.bars)} bares.")
@@ -98,9 +101,6 @@ if __name__ == "__main__":
     main()
 
     app.run(debug=True)
-
-
-    
 
 
 # def load_bars_from_csv(file_path):

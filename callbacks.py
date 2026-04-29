@@ -33,15 +33,25 @@ def update_rectangle(center=(-23.0,-46.0), diagonal=1):
     bounds = [[lat+half, lon+half],[lat-half, lon-half]]
     return [dl.Rectangle(bounds=bounds)]
 
+def update_circle(center=(-23.0,-46.0), radius = 1):
+     return [
+        dl.Circle(
+            center=center,
+            radius=radius * 1000
+        )
+    ]
+    
+
 @callback(
     [Output("map-layer", "children"),
-     Output("bar-table", "data")],
+    Output("bar-table", "data")],
     Input("input-address", "value"),
-    Input("input-diagonal", "value"),
+    Input("input-range", "value"),
+    Input("input-shape", "value")
 )
 
-def update_map(center_adr, diag_val):
-    if not diag_val or not center_adr:
+def update_map(center_adr, search_range, shape):
+    if not search_range or not center_adr:
         return no_update
 
     center_val = getCoordinates(center_adr)
@@ -50,16 +60,33 @@ def update_map(center_adr, diag_val):
         return no_update
 
     lat, lon = center_val
-    half_diag = diag_val/2
-
-    bars_found = tree.range_search(tree.root, lat-half_diag, lat+half_diag, lon-half_diag, lon+half_diag, 0)
-
-    markers = update_markers(bars_found) 
-    rectangle = update_rectangle(center=center_val, diagonal=diag_val)
-
-    table_data = [
+    
+    #caso formato seja retangulo usamos a função de busca adequada
+    if shape == "retangulo": 
+        half_diag = search_range/2
+        bars_found = tree.range_search_rectangule(tree.root, lat-half_diag, lat+half_diag, lon-half_diag, lon+half_diag, 0)
+        markers = update_markers(bars_found) 
+        rectangle = update_rectangle(center=center_val, diagonal=search_range)
+        table_data = [
         {"name": b.name, "address": b.address, "latitude": b.latitude, "longitude": b.longitude} 
         for b in bars_found
     ]
+        return [markers + rectangle, table_data]
+    elif shape == "circulo":
+        #caso seja círculo usamos a função de busca correspondente 
+        bars_found = tree.range_search_circle(tree.root, search_range, lat, lon)
+        markers = update_markers(bars_found) 
+        #atualizando o círculo 
+        circle = update_circle(center=center_val, radius = search_range)
+        table_data = [
+        {"name": b.name, "address": b.address, "latitude": b.latitude, "longitude": b.longitude} 
+        for b in bars_found
+    ]
+        return [markers + circle, table_data]
+    else:
+        return no_update
 
-    return [markers + rectangle, table_data]
+    
+
+    
+    
