@@ -44,11 +44,38 @@ class D2_tree:
             
         return node 
     
-    
-    
-    
-    
-    
+
+    def range_search(self, node: Tree_node, lat_min, lat_max, long_min, long_max, depth):
+        if not node:
+            return []
+        
+        result_bars = []
+
+        if not node.left_son and not node.right_son:
+            if node.bar:
+                bar = node.bar
+                if long_min <= bar.longitude <= long_max and  lat_min <= bar.latitude <= lat_max:
+                    return[bar]
+                return []
+
+        c = node.value
+        axis = depth % 2 
+        # par é latitude
+        # impar é longitudo
+
+        if axis==0: # latitude
+            if lat_min <= c and node.left_son:
+                result_bars.extend(self.range_search(node.left_son, lat_min, lat_max, long_min, long_max, depth+1))
+            if lat_max >= c and node.right_son:
+                result_bars.extend(self.range_search(node.right_son, lat_min, lat_max, long_min, long_max, depth+1))
+
+        else:  #longitude
+            if long_min <= c and node.left_son:
+                result_bars.extend(self.range_search(node.left_son, lat_min, lat_max, long_min, long_max, depth+1))
+            if long_max >= c and node.right_son:
+                result_bars.extend(self.range_search(node.right_son, lat_min, lat_max, long_min, long_max, depth+1))
+
+        return result_bars
         
     # def bar_label(self, bar):
     #     nome = getattr(bar, "name", getattr(bar, "nome", "sem_nome"))

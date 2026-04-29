@@ -40,13 +40,5 @@ def getCoordinates(query: str):
         return None
 
 
-
-def testando():
-
-    (X, Y) = getCoordinates("Torre Eiffel")
-
-    print(f"Coordenada ({X},{Y})")
-    print(f"coordenada pra pesquisar no MAPS: ({Y},{X})")
-    
     
     
