@@ -1,4 +1,4 @@
-import random
+import math
 from dash import callback, Output, Input, no_update, dash_table
 import dash_leaflet as dl
 from mapAPI import getCoordinates
@@ -27,13 +27,13 @@ def update_markers(bars:list[Bar]):
         )
     return markers
 
-def update_rectangle(center=(-23.0,-46.0), diagonal=1):
-    half = diagonal/2
+def update_rectangle(center, delta_lat, delta_long):
     lat, lon = center
-    bounds = [[lat+half, lon+half],[lat-half, lon-half]]
+    bounds = [[lat+delta_lat, lon+delta_long],[lat-delta_lat, lon-delta_long]]
     return [dl.Rectangle(bounds=bounds)]
 
-def update_circle(center=(-23.0,-46.0), radius = 1):
+
+def update_circle(center, radius = 1):
      return [
         dl.Circle(
             center=center,
@@ -41,6 +41,21 @@ def update_circle(center=(-23.0,-46.0), radius = 1):
         )
     ]
     
+# Fórmula de Haversine
+def calculate_distance(lat_center, long_center, lat_bar, long_bar):
+    R = 6371.0  # Raio médio da Terra 
+
+    phi1, phi2 = math.radians(lat_center), math.radians(lat_bar)
+    dphi = math.radians(lat_bar - lat_center)
+    dlambda = math.radians(long_bar - long_center)
+
+    a = math.sin(dphi / 2)**2 + \
+        math.cos(phi1) * math.cos(phi2) * \
+        math.sin(dlambda / 2)**2
+        
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+    return R * c
 
 @callback(
     [Output("map-layer", "children"),
@@ -61,25 +76,43 @@ def update_map(center_adr, search_range, shape):
 
     lat, lon = center_val
     
+    
+    
     #caso formato seja retangulo usamos a função de busca adequada
     if shape == "retangulo": 
-        half_diag = search_range/2
-        bars_found = tree.range_search_rectangule(tree.root, lat-half_diag, lat+half_diag, lon-half_diag, lon+half_diag, 0)
+        # Transformando de KM para Latitude/Longitude
+        delta_lat = search_range / (2*111.32 )
+        delta_long = search_range / (2 *(111.32 * math.cos(math.radians(search_range))))
+        
+        bars_found = tree.range_search_rectangule(tree.root, lat-delta_lat, lat+delta_lat, lon-delta_long, lon+delta_long, 0)
+
+        # Ordenando os bares pela distância
+        bars_found.sort(key=lambda bar: calculate_distance(
+            lat, lon, bar.latitude, bar.longitude
+        ))
+
         markers = update_markers(bars_found) 
-        rectangle = update_rectangle(center=center_val, diagonal=search_range)
+        rectangle = update_rectangle(center_val, delta_lat, delta_long)
         table_data = [
-        {"name": b.name, "address": b.address, "latitude": b.latitude, "longitude": b.longitude} 
+        {"name": b.name, "address": b.address, "distance": calculate_distance(lat, lon, b.latitude, b.longitude)} 
         for b in bars_found
     ]
         return [markers + rectangle, table_data]
+    
+    #caso seja círculo usamos a função de busca correspondente 
     elif shape == "circulo":
-        #caso seja círculo usamos a função de busca correspondente 
         bars_found = tree.range_search_circle(tree.root, search_range, lat, lon)
+
+        # Ordenando os bares pela distância
+        bars_found.sort(key=lambda bar: calculate_distance(
+            lat, lon, bar.latitude, bar.longitude
+        ))
+
         markers = update_markers(bars_found) 
         #atualizando o círculo 
         circle = update_circle(center=center_val, radius = search_range)
         table_data = [
-        {"name": b.name, "address": b.address, "latitude": b.latitude, "longitude": b.longitude} 
+        {"name": b.name, "address": b.address, "distance": calculate_distance(lat, lon, b.latitude, b.longitude)} 
         for b in bars_found
     ]
         return [markers + circle, table_data]
