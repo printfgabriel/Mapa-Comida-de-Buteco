@@ -36,7 +36,7 @@ class D2_tree:
         self.bars = bars
         
         
-    def build_tree(self, depth, bars):
+    def build_tree(self, depth, bars, bars_by_other_axis=None):
         #caso a lista esteja vazia
         if not bars:
             return None
@@ -45,12 +45,15 @@ class D2_tree:
         #profundidades pares -> mediana da latitude, profundidades ímpares-> mediana da longitude
         axis = depth % 2
         
-        ordered_bars = []
-        if(axis == 0):
-            ordered_bars = sorted(bars, key = lambda b: b.latitude)
-        else:
-            ordered_bars = sorted(bars, key = lambda b: b.longitude)
-        
+        #ordenamos por latitude e longitude apenas na primeira chamada
+        if bars_by_other_axis is None:
+            bars = sorted(bars, key=lambda b: b.latitude)
+            bars_by_other_axis = sorted(bars, key=lambda b: b.longitude)
+    
+        ordered_bars = bars
+        other_ordered_bars = bars_by_other_axis
+    
+
         #caso tenhamos chegado a um nó folha guardamos um objeto
         if(len(ordered_bars) == 1):
             node = Tree_node(bar =ordered_bars[0])
@@ -58,13 +61,32 @@ class D2_tree:
         #caso não seja um nó folha guardamos e mediana e calculamos recursivamente as subárvores a esquerda e direita
         
             middle = len(ordered_bars) // 2
+            
             if(axis == 0):
                node = Tree_node(ordered_bars[middle].latitude)
             else:
                node = Tree_node(ordered_bars[middle].longitude)     
+               
+            #divide os bares em duas metades de acordo com mediana
+            left_ordered_bars = ordered_bars[0:middle]
+            right_ordered_bars = ordered_bars[middle:]
+        
             
-            node.left_son = self.build_tree(depth+1, ordered_bars[0:middle])
-            node.right_son = self.build_tree(depth+1, ordered_bars[middle:])
+            #divide os bares no outro eixo também
+            left_other_axis_ordered_bars = []
+            right_other_axis_ordered_bars = []
+            
+            left_ids = set(id(bar) for bar in left_ordered_bars)
+            
+            for bar in other_ordered_bars:
+                if id(bar) in left_ids:
+                    left_other_axis_ordered_bars.append(bar)
+                else:
+                    right_other_axis_ordered_bars.append(bar)
+                
+            node.left_son = self.build_tree(depth + 1, left_other_axis_ordered_bars, left_ordered_bars)
+            
+            node.right_son = self.build_tree(depth + 1, right_other_axis_ordered_bars, right_ordered_bars)
             
         return node 
     
@@ -137,4 +159,3 @@ class D2_tree:
                 
         return results  
     
-   

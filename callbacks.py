@@ -75,8 +75,7 @@ def update_map(center_adr, search_range, shape):
         return no_update
 
     lat, lon = center_val
-    
-    
+
     
     #caso formato seja retangulo usamos a função de busca adequada
     if shape == "retangulo": 

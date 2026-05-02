@@ -1,6 +1,6 @@
 
 import requests
-
+import time
 
 # Coloca o endereço e recebe as coordenadas
 def getCoordinates(query: str):
@@ -15,7 +15,8 @@ def getCoordinates(query: str):
     headers = {
         "User-Agent": "comida-di-buteco/1.0 ()"
     }
-
+    
+    time.sleep(1) 
     try:
         response_raw = requests.get(
             "https://nominatim.openstreetmap.org/search", 

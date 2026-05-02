@@ -219,19 +219,19 @@ body {
 }
 
 .dash-spreadsheet-container th {
-    background-color: #7a0000 !important;
-    color: #fff8ee !important;
-    font-weight: 600 !important;
-    text-align: left !important;
+    background-color: #7a0000;
+    color: #fff8ee;
+    font-weight: 600;
+    text-align: left;
 }
 
 .dash-spreadsheet-container td {
-    color: #3b2418 !important;
-    background-color: #fffdf8 !important;
+    color: #3b2418;
+    background-color: #fffdf8;
 }
 
 .dash-spreadsheet-container tr:hover td {
-    background-color: #fff1dc !important;
+    background-color: #fff1dc;
 }
 
 /* Container antigo, caso volte a usar */
@@ -242,7 +242,7 @@ body {
 
 /* Controles do Leaflet */
 .leaflet-control-zoom a {
-    color: #7a0000 !important;
+    color: #7a0000;
     font-weight: bold;
 }
 
